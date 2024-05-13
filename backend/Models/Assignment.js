@@ -2,17 +2,12 @@ const mongoose = require('mongoose')
 const {Schema} = mongoose
 
 const AssignmentSchema = new Schema({
-    courseId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'Course',
-        required: true
-    },
     CreatedBy:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'User',
         required: true
     },
-    assignmentTile:{
+    assignmentTitle:{
         type:String,
         required:true
     },//assignment as picture

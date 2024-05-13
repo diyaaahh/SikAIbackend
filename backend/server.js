@@ -16,7 +16,11 @@ db.once('open', () => {
 });
 
 const userRoutes = require("./Routes/UserRoutes");
+const assignmentRoutes = require("./Routes/AssignmentRoutes")
+
+
 app.use("/auth", userRoutes);
+app.use("/assignment", assignmentRoutes)
 
 app.listen(PORT,() =>{
     console.log(`Server started on port ${PORT}`)
