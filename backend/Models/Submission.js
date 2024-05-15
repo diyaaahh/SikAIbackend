@@ -19,6 +19,11 @@ const SubmissionSchema = new Schema({
     content:{
         type:String,
         required:true,
+    },
+    status:{
+        type:String,
+        enum:["Submitted","Pending","Late submission"],
+        default:"Pending"
     }
 })
 const submissionModel = mongoose.model("Submission", SubmissionSchema);
