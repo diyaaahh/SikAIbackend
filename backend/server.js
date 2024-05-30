@@ -22,11 +22,13 @@ const userRoutes = require("./Routes/UserRoutes");
 const assignmentRoutes = require("./Routes/AssignmentRoutes");
 const submissionRoutes = require("./Routes/SubmissionRoutes");
 const examRoutes = require("./Routes/ExamRoutes");
+const performanceRoutes = require("./Routes/performanceRoutes");
 
 app.use("/auth", userRoutes);
 app.use("/assignment", assignmentRoutes);
 app.use("/submission", submissionRoutes);
 app.use("/exams", examRoutes);
+app.use("/performance", performanceRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

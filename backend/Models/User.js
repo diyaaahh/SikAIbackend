@@ -29,6 +29,26 @@ const userSchema = new Schema(
       enum: ["Student", "Teacher"],
       default: "Student",
     },
+    performance: {
+      exams: [
+        {
+          exam: { type: mongoose.Schema.Types.ObjectId, ref: "Exam" },
+          score: Number,
+          timeTaken: Number, // time taken to complete the exam in minutes
+          date: { type: Date, default: Date.now },
+        },
+      ],
+      assignments: [
+        {
+          assignment: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Assignment",
+          },
+          score: Number,
+          date: { type: Date, default: Date.now },
+        },
+      ],
+    },
   },
   { timestamps: true }
 );
