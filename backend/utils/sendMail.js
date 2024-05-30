@@ -1,6 +1,6 @@
-import nodemailer from "nodemailer";
-import { getAllStudentEmails } from "../controllers/user.controller.js";
-import { formatDateTime } from "./formatDateAndTime.js";
+const nodemailer = require("nodemailer");
+const { formatDateTime } = require("../utils/formatDateAndTime");
+const { getAllStudentEmails } = require("../Controllers/userController");
 
 const transporterConfig = {
   service: "gmail",
@@ -15,7 +15,7 @@ const sendMail = async (mailMessage) => {
   await transporter.sendMail(mailMessage);
 };
 
-export const sendMailToUsersAboutExam = async (examData) => {
+const sendMailToUsersAboutExam = async (examData) => {
   const allEmails = await getAllStudentEmails();
 
   const [date, time] = formatDateTime(examData.date);
@@ -45,4 +45,4 @@ export const sendMailToUsersAboutExam = async (examData) => {
   await sendMail(mailMessage);
 };
 
-export default sendMail;
+module.exports = { sendMail, sendMailToUsersAboutExam };

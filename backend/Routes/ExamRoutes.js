@@ -1,5 +1,5 @@
-import { Router } from "express";
-import examController from "../Controllers/examController";
+const { Router } = require("express");
+const examController = require("../Controllers/examController");
 
 const examRoutes = Router();
 
@@ -24,4 +24,4 @@ examRoutes
   .patch(examController.updateQuestionDetails)
   .delete(examController.deleteQuestionFromExam);
 
-export default examRoutes;
+module.exports = examRoutes;

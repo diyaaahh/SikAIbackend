@@ -1,5 +1,4 @@
-import mongoose, { Schema } from "mongoose";
-
+const mongoose = require("mongoose");
 // Create a schema for the questions
 const questionSchema = new mongoose.Schema({
   question: {
@@ -43,4 +42,4 @@ const examSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default examSchema;
+module.exports = mongoose.model("Exam", examSchema);

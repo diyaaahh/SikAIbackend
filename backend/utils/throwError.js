@@ -1,12 +1,12 @@
+const throwError = ({ message, statusCode }) => {
+  const error = new Error(message);
+  error.statusCode = statusCode;
+  error.status = statusCode >= 400 && statusCode < 500 ? "fail" : "error";
 
-export const throwError = ({ message, statusCode }) => {
-    const error = new Error(message);
-    error.statusCode = statusCode;
-    error.status = statusCode >= 400 && statusCode < 500 ? "fail" : "error"
+  // to differentiate between system error and custom error
+  error.isOperationalError = true;
 
-    // to differentiate between system error and custom error
-    error.isOperationalError = true
+  throw error;
+};
 
-    throw error;
-}
-
+module.exports = throwError;

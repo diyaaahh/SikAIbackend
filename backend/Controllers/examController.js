@@ -1,12 +1,12 @@
-import { HttpStatus } from "../constant/constant.js";
-import sendSuccessResponse from "../helper/apiResponseHandler.js";
-import asyncErrorHandler from "../utils/asyncHandler.js";
-import { sendMailToUsersAboutExam } from "../utils/sendMail.js";
-import { throwError } from "../utils/throwError.js";
-import Exam from "../Models/Exam.js";
-import User from "../Models/User.js";
+const HttpStatus = require("../constant/constants.js");
+const asyncErrorHandler = require("../utils/asyncHandler.js");
+const throwError = require("../utils/throwError.js");
+const sendSuccessResponse = require("../helper/apiResponseHandler.js");
+const Exam = require("../Models/Exam.js");
+const User = require("../Models/User.js");
+const sendMailToUsersAboutExam = require("../utils/sendMail.js");
 
-export const createExam = asyncErrorHandler(async (req, res) => {
+const createExam = asyncErrorHandler(async (req, res) => {
   const examData = req.body;
   const { title, teacher, subject, date, duration } = examData;
 
@@ -49,7 +49,7 @@ export const createExam = asyncErrorHandler(async (req, res) => {
   });
 });
 
-export const getAllExams = asyncErrorHandler(async (req, res) => {
+const getAllExams = asyncErrorHandler(async (req, res) => {
   const exams = await Exam.find().sort({ _id: -1 }).populate({
     path: "teacher",
     select: "-password",
@@ -63,7 +63,7 @@ export const getAllExams = asyncErrorHandler(async (req, res) => {
   });
 });
 
-export const getExamById = asyncErrorHandler(async (req, res) => {
+const getExamById = asyncErrorHandler(async (req, res) => {
   const examID = req.params.examID;
 
   if (!examID) {
@@ -94,7 +94,7 @@ export const getExamById = asyncErrorHandler(async (req, res) => {
   });
 });
 
-export const updateExamDetails = asyncErrorHandler(async (req, res) => {
+const updateExamDetails = asyncErrorHandler(async (req, res) => {
   const examID = req.params.examID;
   const { updatedExamDetails } = req.body;
 
@@ -125,7 +125,7 @@ export const updateExamDetails = asyncErrorHandler(async (req, res) => {
 });
 
 // Delete an exam
-export const deleteExam = asyncErrorHandler(async (req, res) => {
+const deleteExam = asyncErrorHandler(async (req, res) => {
   const examID = req.params.examID;
 
   if (!examID) {
@@ -152,7 +152,7 @@ export const deleteExam = asyncErrorHandler(async (req, res) => {
 });
 
 // Add a question to an exam
-export const addQuestionToExam = asyncErrorHandler(async (req, res) => {
+const addQuestionToExam = asyncErrorHandler(async (req, res) => {
   const examID = req.params.examID;
 
   const { question, options, correctAns } = req.body;
@@ -192,7 +192,7 @@ export const addQuestionToExam = asyncErrorHandler(async (req, res) => {
 });
 
 // Update question details within an exam
-export const updateQuestionDetails = asyncErrorHandler(async (req, res) => {
+const updateQuestionDetails = asyncErrorHandler(async (req, res) => {
   const examID = req.params.examID;
 
   const { questionID, question, options, correctAns } = req.body;
@@ -236,7 +236,7 @@ export const updateQuestionDetails = asyncErrorHandler(async (req, res) => {
 });
 
 // Delete a question from an exam
-export const deleteQuestionFromExam = asyncErrorHandler(async (req, res) => {
+const deleteQuestionFromExam = asyncErrorHandler(async (req, res) => {
   const examID = req.params.examID;
   const questionID = req.body.questionID;
 
@@ -273,3 +273,14 @@ export const deleteQuestionFromExam = asyncErrorHandler(async (req, res) => {
     message: "Question deleted from the exam successfully",
   });
 });
+
+module.exports = {
+  createExam,
+  getAllExams,
+  getExamById,
+  updateExamDetails,
+  deleteExam,
+  addQuestionToExam,
+  updateQuestionDetails,
+  deleteQuestionFromExam,
+};
