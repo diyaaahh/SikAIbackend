@@ -4,20 +4,21 @@ const throwError = require("../utils/throwError.js");
 const sendSuccessResponse = require("../helper/apiResponseHandler.js");
 const Exam = require("../Models/Exam.js");
 const User = require("../Models/User.js");
-const sendMailToUsersAboutExam = require("../utils/sendMail.js");
+const { sendMailToUsersAboutExam } = require("../utils/sendMail.js");
 
 const createExam = asyncErrorHandler(async (req, res) => {
   const examData = req.body;
   const { title, teacher, subject, date, duration } = examData;
 
-  if (!title || !teacher || !subject || !date || !duration) {
-    throwError({
-      statusCode: HttpStatus.BAD_REQUEST,
-      message: "All exam details are required",
-    });
-  }
+  // if (!title || !teacher || !subject || !date || !duration) {
+  //   throwError({
+  //     statusCode: HttpStatus.BAD_REQUEST,
+  //     message: "All exam details are required",
+  //   });
+  // }
 
   // Validate if the teacher exists
+  console.log("Teacher", teacher);
   const teacherUser = await User.findById(teacher);
 
   console.log(teacher);
@@ -40,11 +41,11 @@ const createExam = asyncErrorHandler(async (req, res) => {
 
   await newExam.save();
 
-  await sendMailToUsersAboutExam(examData);
+  // await sendMailToUsersAboutExam(examData);
 
   sendSuccessResponse({
     res,
-    statusCode: HttpStatus.CREATED,
+    statusCode: "200",
     message: "Exam created successfully",
   });
 });

@@ -1,4 +1,4 @@
-const roleEnum = ["admin", "teacher", "student"];
+const roleEnum = ["admin", "Teacher", "Student"];
 const HttpStatus = {
   CONTINUE: 100,
   SWITCHING_PROTOCOLS: 101,

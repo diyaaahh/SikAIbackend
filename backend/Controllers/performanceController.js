@@ -3,9 +3,7 @@ const asyncErrorHandler = require("../utils/asyncHandler.js");
 const throwError = require("../utils/throwError.js");
 const sendSuccessResponse = require("../helper/apiResponseHandler.js");
 const User = require("../Models/User.js");
-const Exam = require("../Models/Exam.js");
-const Assignment = require("../Models/Assignment.js");
-const Grade = require("../Models/Grade.js");
+
 const getStudentPerformance = asyncErrorHandler(async (req, res) => {
   const userID = req.params.userID;
 
@@ -230,3 +228,10 @@ module.exports = {
 
 
 */
+// assignment class monitoring and automated tutorial tracking
+// add certain time to complete the assignment
+// tabs out logic in exams
+
+// suggest student to go through certain chapters again if they score below certain marks
+// add a feature to track the time spent on the assignment
+//questions and tags in the assesment and exam

@@ -33,7 +33,6 @@ const examSchema = new mongoose.Schema(
       required: true,
     }, // Exam duration in minutes
     questions: [questionSchema],
-    teacher: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
     examStatus: {
       type: String,

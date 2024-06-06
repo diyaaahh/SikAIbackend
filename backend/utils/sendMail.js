@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 const { formatDateTime } = require("../utils/formatDateAndTime");
-const { getAllStudentEmails } = require("../Controllers/userController");
+const getAllStudentEmails = require("../Controllers/userController");
 
 const transporterConfig = {
   service: "gmail",

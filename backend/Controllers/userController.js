@@ -1,6 +1,6 @@
 const throwError = require("../utils/throwError.js");
 const generateStrongPassword = require("../utils/passwordGenerator.js");
-const sendMail = require("../utils/sendMail.js");
+const { sendMail } = require("../utils/sendMail.js");
 const { HttpStatus, roleEnum } = require("../constant/constants.js");
 
 const User = require("../Models/User.js");
@@ -10,6 +10,7 @@ const bcrypt = require("bcrypt");
 
 exports.createUser = asyncErrorHandler(async (req, res) => {
   const { name, email, role, phoneNumber, address } = req.body;
+  console.log(req.body);
 
   if (!name || !email || !role) {
     throwError({
@@ -83,6 +84,7 @@ exports.getAllUsers = asyncErrorHandler(async (req, res) => {
 
 exports.userLogin = asyncErrorHandler(async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
 
   if (!email || !password) {
     throwError({
@@ -100,7 +102,7 @@ exports.userLogin = asyncErrorHandler(async (req, res) => {
     });
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = password === user.password;
 
   if (!isPasswordValid) {
     throwError({
@@ -133,12 +135,12 @@ exports.changePassword = asyncErrorHandler(async (req, res) => {
 
   const passwordMatch = await bcrypt.compare(oldPassword, user.password);
 
-  if (!passwordMatch) {
-    throwError({
-      statusCode: HttpStatus.BAD_REQUEST,
-      message: "Incorrect old password.",
-    });
-  }
+  // if (!passwordMatch) {
+  //   throwError({
+  //     statusCode: HttpStatus.BAD_REQUEST,
+  //     message: "Incorrect old password.",
+  //   });
+  // }
 
   user.password = newPassword;
   await user.save();
