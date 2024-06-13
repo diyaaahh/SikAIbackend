@@ -1,4 +1,4 @@
-const HttpStatus = require("../constant/constants.js");
+const {HttpStatus} = require("../constant/constants.js");
 const asyncErrorHandler = require("../utils/asyncHandler.js");
 const throwError = require("../utils/throwError.js");
 const sendSuccessResponse = require("../helper/apiResponseHandler.js");
@@ -8,7 +8,7 @@ const { sendMailToUsersAboutExam } = require("../utils/sendMail.js");
 
 const createExam = asyncErrorHandler(async (req, res) => {
   const examData = req.body;
-  const { title, teacher, subject, date, duration } = examData;
+  const { title, teacher, subject} = examData;
 
   // if (!title || !teacher || !subject || !date || !duration) {
   //   throwError({
@@ -35,8 +35,6 @@ const createExam = asyncErrorHandler(async (req, res) => {
     title,
     teacher,
     subject,
-    date,
-    duration,
   });
 
   await newExam.save();
@@ -155,10 +153,11 @@ const deleteExam = asyncErrorHandler(async (req, res) => {
 // Add a question to an exam
 const addQuestionToExam = asyncErrorHandler(async (req, res) => {
   const examID = req.params.examID;
-
-  const { question, options, correctAns } = req.body;
-
-  if (!examID || !question || !options || !correctAns) {
+  const { question, options, correctAns, topicName } = req.body;
+  console.log(examID);
+  console.log(question);
+  console.log(options);
+  if (!examID || !question || !Array.isArray(options) || options.length === 0 || !correctAns) {
     throwError({
       statusCode: HttpStatus.BAD_REQUEST,
       message: "Exam ID, question, options, and correctAnswer are required",
@@ -169,6 +168,7 @@ const addQuestionToExam = asyncErrorHandler(async (req, res) => {
     question,
     options: options || [],
     correctAns: correctAns || null,
+    topicName
   };
 
   const exam = await Exam.findById(examID);
@@ -191,6 +191,9 @@ const addQuestionToExam = asyncErrorHandler(async (req, res) => {
     data: newQuestion,
   });
 });
+
+
+
 
 // Update question details within an exam
 const updateQuestionDetails = asyncErrorHandler(async (req, res) => {
