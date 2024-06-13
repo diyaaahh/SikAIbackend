@@ -58,7 +58,7 @@ const getAllExams = asyncErrorHandler(async (req, res) => {
 
   sendSuccessResponse({
     res,
-    statusCode: HttpStatus.OK,
+    statusCode: "200",
     message: "All exams retrieved successfully",
     data: exams,
   });
@@ -69,7 +69,7 @@ const getExamById = asyncErrorHandler(async (req, res) => {
 
   if (!examID) {
     throwError({
-      statusCode: HttpStatus.BAD_REQUEST,
+      statusCode: "400",
       message: "Exam ID is required",
     });
   }
@@ -79,17 +79,18 @@ const getExamById = asyncErrorHandler(async (req, res) => {
     path: "teacher",
     select: "-password",
   });
+  console.log(exam);
 
   if (!exam) {
     throwError({
-      statusCode: HttpStatus.NOT_FOUND,
+      statusCode: "404",
       message: "Exam not found",
     });
   }
 
   sendSuccessResponse({
     res,
-    statusCode: HttpStatus.OK,
+    statusCode: "200",
     message: "Exam details retrieved successfully",
     data: exam,
   });
