@@ -6,18 +6,18 @@ const CourseSchema = new Schema({
     type: String,
     required: true,
   },
-  material:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"Material"
+  material: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Material",
   },
-  assignment:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"Assignment"
+  assignment: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Assignment",
   },
-  exam:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"Exam"
-  } 
+  exam: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Exam",
+  },
 });
-const courseModel = mongoose.model("Course", CourseSchema);
+const courseModel = mongoose.model("Chapter", CourseSchema);
 module.exports = courseModel;

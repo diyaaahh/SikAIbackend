@@ -1,8 +1,15 @@
-const Course = require("../models/Course");
+const Course = require("../Models/Course");
 
 const createCourse = async (req, res) => {
   try {
-    const newCourse = await Course.create(req.body);
+    const { courseName, description, teacherId, chapter, student } = req.body;
+    const newCourse = await Course.create({
+      courseName,
+      description,
+      teacherId,
+      chapter,
+      student,
+    });
     res.status(201).json(newCourse);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -20,7 +27,7 @@ const getAllCourses = async (req, res) => {
 
 const getCourseById = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id);
+    const course = await Course.findById(req.params.id).populate("chapter");
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
@@ -32,15 +39,54 @@ const getCourseById = async (req, res) => {
 
 const updateCourseById = async (req, res) => {
   try {
+    const { courseName, description, teacherId, chapter, student } = req.body;
     const updatedCourse = await Course.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      {
+        courseName,
+        description,
+        teacherId,
+        chapter,
+        student,
+      },
       { new: true }
     );
     if (!updatedCourse) {
       return res.status(404).json({ message: "Course not found" });
     }
     res.status(200).json(updatedCourse);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+//add chapter
+const addChapter = async (req, res) => {
+  try {
+    const chapter = req.body;
+    const course = await Course.findById(req.params.id);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    course.chapter.push(chapter);
+    await course.save();
+    res.status(200).json(course);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+//add student
+const addStudent = async (req, res) => {
+  try {
+    const student = req.body;
+    const course = await Course.findById(req.params.id);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    course.student.push(student);
+    await course.save();
+    res.status(200).json(course);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -64,4 +110,6 @@ module.exports = {
   getCourseById,
   updateCourseById,
   deleteCourseById,
+  addChapter,
+  addStudent,
 };

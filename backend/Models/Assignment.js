@@ -7,10 +7,14 @@ const AssignmentSchema = new Schema({
     ref: "User",
     required: true,
   },
+  assignmentUrl: {
+    type: String,
+    required: true,
+  },
   assignmentTitle: {
     type: String,
     required: true,
-  }, //assignment as picture
+  },
   description: {
     type: String,
     default: "",

@@ -31,6 +31,9 @@ const submissionRoutes = require("./Routes/SubmissionRoutes");
 const examRoutes = require("./Routes/ExamRoutes");
 const scoreRoutes = require("./Routes/ScoreRoutes");
 const performanceRoutes = require("./Routes/performanceRoutes");
+const courseRoutes = require("./Routes/CourseRoutes");
+const materialRoutes = require("./Routes/MaterialRoutes");
+const chapterRoutes = require("./Routes/chapterRoutes");
 
 app.use("/auth", userRoutes);
 app.use("/assignment", assignmentRoutes);
@@ -38,6 +41,9 @@ app.use("/submission", submissionRoutes);
 app.use("/exams", examRoutes);
 app.use("/score", scoreRoutes);
 app.use("/performance", performanceRoutes);
+app.use("/course", courseRoutes);
+app.use("/material", materialRoutes);
+app.use("/chapter", chapterRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
