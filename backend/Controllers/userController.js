@@ -112,12 +112,11 @@ exports.userLogin = asyncErrorHandler(async (req, res) => {
   }
 
   user.password = null;
-
   sendSuccessResponse({
     res,
     statusCode: HttpStatus.OK,
     message: `Authentication successful, Welcome ${user.name}`,
-    data: user,
+    data: user
   });
 });
 

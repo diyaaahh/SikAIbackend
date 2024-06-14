@@ -29,12 +29,14 @@ const userRoutes = require("./Routes/UserRoutes");
 const assignmentRoutes = require("./Routes/AssignmentRoutes");
 const submissionRoutes = require("./Routes/SubmissionRoutes");
 const examRoutes = require("./Routes/ExamRoutes");
+const scoreRoutes = require("./Routes/ScoreRoutes");
 const performanceRoutes = require("./Routes/performanceRoutes");
 
 app.use("/auth", userRoutes);
 app.use("/assignment", assignmentRoutes);
 app.use("/submission", submissionRoutes);
 app.use("/exams", examRoutes);
+app.use("/score", scoreRoutes);
 app.use("/performance", performanceRoutes);
 
 app.listen(PORT, () => {

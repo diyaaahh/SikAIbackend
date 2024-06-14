@@ -12,14 +12,6 @@ const GradeSchema = new Schema({
     ref: "User",
     required: true,
   },
-  exam: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Exam",
-  },
-  score: {
-    type: Number,
-    required: true,
-  },
   feedback: {
     type: String,
     default: "",
