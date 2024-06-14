@@ -13,7 +13,7 @@ const PORT = 3000;
 const connectionString = process.env.MONGOCONNECTION;
 
 mongoose.connect(
-  "mongodb+srv://diyaneupane:1234567890@sikai.jotrerj.mongodb.net/"
+  "mongodb+srv://b33b3k:b33b3k@cluster0.fwqzwpw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 );
 
 const db = mongoose.connection;
@@ -22,6 +22,9 @@ db.once("open", () => {
   console.log("Connected to MongoDB");
 });
 
+app.get("/", (req, res) => {
+  res.send("Welcome to SikAI Backend");
+});
 const userRoutes = require("./Routes/UserRoutes");
 const assignmentRoutes = require("./Routes/AssignmentRoutes");
 const submissionRoutes = require("./Routes/SubmissionRoutes");
