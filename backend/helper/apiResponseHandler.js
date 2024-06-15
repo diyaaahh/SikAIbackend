@@ -5,7 +5,7 @@ const sendSuccessResponse = ({
   statusCode = HttpStatus.OK,
   message = "",
 }) => {
-  return res.status(statusCode).json({
+  return res.status(200).json({
     status: "ok",
     ...(data && { data }),
     ...(message && { message }),

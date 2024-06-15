@@ -2,9 +2,12 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const MaterialSchema = new Schema({
-  content: {
+  fileNameUrl: {
     type: String,
     required: true,
+  },
+  summary: {
+    type: [String],
   },
   uploadDate: {
     type: Date,

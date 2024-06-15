@@ -3,9 +3,11 @@ const Material = require("../Models/Material");
 // Controller to create a new material
 const createMaterial = async (req, res) => {
   try {
-    const { content } = req.body;
+    const { fileNameUrl, summary } = req.body;
+    console.log(fileNameUrl);
     const newMaterial = await Material.create({
-      content,
+      fileNameUrl,
+      summary,
       uploadDate: Date.now(),
     });
     res.status(201).json(newMaterial);

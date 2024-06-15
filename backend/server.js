@@ -6,8 +6,13 @@ app.use(express.json());
 
 //cors
 const cors = require("cors");
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:5173", // Frontend URL
+  methods: ["GET", "POST"], // Allowed HTTP methods
+  allowedHeaders: ["Content-Type"], // Allowed headers
+};
 
+app.use(cors(corsOptions));
 const PORT = 3000;
 
 const connectionString = process.env.MONGOCONNECTION;
