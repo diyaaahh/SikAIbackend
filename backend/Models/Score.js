@@ -12,6 +12,11 @@ const scoreSchema =  new Schema({
     },
     score:{
         type: Number
+    },
+    status:{
+        type:String,
+        enum :['Pass', "Fail"],
+        default:"Fail"
     }
 })
 
