@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { getChapterExams } = require("../Controllers/assignmentController");
 const examController = require("../Controllers/examController");
 
 const examRoutes = Router();
@@ -24,4 +25,7 @@ examRoutes
   .patch(examController.updateQuestionDetails)
   .delete(examController.deleteQuestionFromExam);
 
+  examRoutes
+  .route("/getchapterexams/:chapterId")
+  .get(examController.getChapterExams)
 module.exports = examRoutes;

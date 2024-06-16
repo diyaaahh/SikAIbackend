@@ -4,50 +4,118 @@ const throwError = require("../utils/throwError.js");
 const sendSuccessResponse = require("../helper/apiResponseHandler.js");
 const Exam = require("../Models/Exam.js");
 const User = require("../Models/User.js");
+const Chapter = require("../Models/Chapter")
 const { sendMailToUsersAboutExam } = require("../utils/sendMail.js");
 
-const createExam = asyncErrorHandler(async (req, res) => {
-  const examData = req.body;
-  const { title, teacher, subject, passMarks} = examData;
+// const createExam = asyncErrorHandler(async (req, res) => {
+//   const examData = req.body;
+//   const { title, teacher, subject, passMarks} = examData;
 
-  // if (!title || !teacher || !subject || !date || !duration) {
-  //   throwError({
-  //     statusCode: HttpStatus.BAD_REQUEST,
-  //     message: "All exam details are required",
-  //   });
-  // }
+//   // if (!title || !teacher || !subject || !date || !duration) {
+//   //   throwError({
+//   //     statusCode: HttpStatus.BAD_REQUEST,
+//   //     message: "All exam details are required",
+//   //   });
+//   // }
 
-  // Validate if the teacher exists
-  console.log("Teacher", teacher);
-  const teacherUser = await User.findById(teacher);
+//   // Validate if the teacher exists
+//   console.log("Teacher", teacher);
+//   const teacherUser = await User.findById(teacher);
 
-  console.log(teacher);
+//   console.log(teacher);
 
-  if (!teacherUser) {
-    throwError({
-      statusCode: HttpStatus.NOT_FOUND,
-      message: "Teacher not found",
+//   if (!teacherUser) {
+//     throwError({
+//       statusCode: HttpStatus.NOT_FOUND,
+//       message: "Teacher not found",
+//     });
+//   }
+
+//   // Create the exam
+//   const newExam = new Exam({
+//     title,
+//     teacher,
+//     subject,
+//     passMarks
+//   });
+
+//   await newExam.save();
+
+//   // await sendMailToUsersAboutExam(examData);
+
+//   sendSuccessResponse({
+//     res,
+//     statusCode: "200",
+//     message: "Exam created successfully",
+//   });
+// });
+
+async function createExam(req, res) {
+  try {
+    const {
+      title,
+      teacher,
+      subject,
+      passMarks,
+      chapterId, // Include chapterId in the request body
+    } = req.body;
+
+    // Check if all required fields are provided
+    if (
+      !(
+        title &&
+        teacher&&
+        subject&&
+        passMarks&&
+        chapterId // Ensure chapterId is provided
+      )
+    ) {
+      return res.status(400).send("All required fields must be provided");
+    }
+
+    // Create new assignment
+    const exam = await Exam.create({
+      title,
+      teacher,
+      subject,
+      passMarks
     });
+
+    // Update the chapter to include the new exam
+    const chapter = await Chapter.findByIdAndUpdate(
+      chapterId,
+      { $push: { exam: exam._id } }, // Push the exam ID into the assignment array
+      { new: true, useFindAndModify: false }
+    );
+
+    if (!chapter) {
+      return res.status(404).send("Chapter not found");
+    }
+
+    return res.status(201).send({ exam, chapter });
+  } catch (error) {
+    console.error("Error creating exam:", error);
+    return res.status(500).send("Error creating exam");
   }
+}
+//get chapter specific quizzes
+const getChapterExams = async (req, res) => {
+  const { chapterId } = req.params;
 
-  // Create the exam
-  const newExam = new Exam({
-    title,
-    teacher,
-    subject,
-    passMarks
-  });
+  try {
+    const chapter = await Chapter.findById(chapterId).populate('exam');
 
-  await newExam.save();
+    if (!chapter) {
+      return res.status(404).json({ message: 'Chapter not found' });
+    }
 
-  // await sendMailToUsersAboutExam(examData);
+    return res.status(200).json({ exams: chapter.exam });
+  } catch (error) {
+    console.error('Error fetching chapter exams:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
 
-  sendSuccessResponse({
-    res,
-    statusCode: "200",
-    message: "Exam created successfully",
-  });
-});
 
 const getAllExams = asyncErrorHandler(async (req, res) => {
   const exams = await Exam.find().sort({ _id: -1 }).populate({
@@ -282,6 +350,7 @@ const deleteQuestionFromExam = asyncErrorHandler(async (req, res) => {
 
 module.exports = {
   createExam,
+  getChapterExams,
   getAllExams,
   getExamById,
   updateExamDetails,
