@@ -29,6 +29,10 @@ const examSchema = new mongoose.Schema(
       required: true,
     },
     questions: [questionSchema],
+    passMarks:{
+      type: Number,
+      default:0
+    },
   },
   { timestamps: true }
 );

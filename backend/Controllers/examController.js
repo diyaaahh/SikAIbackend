@@ -8,7 +8,7 @@ const { sendMailToUsersAboutExam } = require("../utils/sendMail.js");
 
 const createExam = asyncErrorHandler(async (req, res) => {
   const examData = req.body;
-  const { title, teacher, subject} = examData;
+  const { title, teacher, subject, passMarks} = examData;
 
   // if (!title || !teacher || !subject || !date || !duration) {
   //   throwError({
@@ -35,6 +35,7 @@ const createExam = asyncErrorHandler(async (req, res) => {
     title,
     teacher,
     subject,
+    passMarks
   });
 
   await newExam.save();
