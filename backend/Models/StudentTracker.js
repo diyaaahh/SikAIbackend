@@ -53,16 +53,26 @@ const StudentTrackerSchema = new Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: "Material",
         },
-        isClicked: {
+        isDownloaded: {
           type: Boolean,
           default: false,
-        },
-        timeSpent: {
-          type: Number,
-          default: 0,
         },
       },
     ],
   },
+  examTracking:{
+    type: [
+     { 
+      examId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Exam"
+      },
+      isTabChanged:{
+        type: Boolean,
+        default: false
+      },
+    }
+    ]
+  }
 });
 const materialModel = mongoose.model("Material", StudentTrackerSchema);

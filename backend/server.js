@@ -43,7 +43,7 @@ const chapterRoutes = require("./Routes/chapterRoutes");
 app.use("/auth", userRoutes);
 app.use("/assignment", assignmentRoutes);
 app.use("/submission", submissionRoutes);
-app.use("/exams", examRoutes);
+app.use("/exam", examRoutes);
 app.use("/score", scoreRoutes);
 app.use("/performance", performanceRoutes);
 app.use("/course", courseRoutes);

@@ -84,6 +84,7 @@ const addQuiz = async (req, res) => {
   }
 };
 
+
 module.exports = {
   createChapter,
   deleteChapterbyId,

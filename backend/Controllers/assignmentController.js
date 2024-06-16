@@ -1,5 +1,6 @@
 const assignmentModel = require("../Models/Assignment");
 const ObjectId = require("mongoose").Types.ObjectId;
+const Chapter = require("../Models/Chapter")
 
 // Controller to create an assignment
 async function createAssignment(req, res) {
@@ -11,6 +12,7 @@ async function createAssignment(req, res) {
       deadline,
       totalPoints,
       assignmentUrl,
+      chapterId, // Include chapterId in the request body
     } = req.body;
 
     // Check if all required fields are provided
@@ -20,7 +22,8 @@ async function createAssignment(req, res) {
         assignmentTitle &&
         deadline &&
         totalPoints &&
-        assignmentUrl
+        assignmentUrl &&
+        chapterId // Ensure chapterId is provided
       )
     ) {
       return res.status(400).send("All required fields must be provided");
@@ -36,12 +39,41 @@ async function createAssignment(req, res) {
       totalPoints,
     });
 
-    return res.status(201).send(assignment);
+    // Update the chapter to include the new assignment
+    const chapter = await Chapter.findByIdAndUpdate(
+      chapterId,
+      { $push: { assignment: assignment._id } }, // Push the assignment ID into the assignment array
+      { new: true, useFindAndModify: false }
+    );
+
+    if (!chapter) {
+      return res.status(404).send("Chapter not found");
+    }
+
+    return res.status(201).send({ assignment, chapter });
   } catch (error) {
     console.error("Error creating assignment:", error);
     return res.status(500).send("Error creating assignment");
   }
 }
+
+// Getting chapter specific assignments
+const getChapterAssignments = async (req, res) => {
+  const { chapterId } = req.params;
+
+  try {
+    const chapter = await Chapter.findById(chapterId).populate('assignment');
+
+    if (!chapter) {
+      return res.status(404).json({ message: 'Chapter not found' });
+    }
+
+    return res.status(200).json({ assignments: chapter.assignment });
+  } catch (error) {
+    console.error('Error fetching chapter assignments:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
 // Controller to edit an assignment
 async function editAssignment(req, res) {
   try {
@@ -79,4 +111,5 @@ async function editAssignment(req, res) {
 module.exports = {
   createAssignment,
   editAssignment,
+  getChapterAssignments
 };
