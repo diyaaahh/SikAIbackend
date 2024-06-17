@@ -39,6 +39,8 @@ const performanceRoutes = require("./Routes/performanceRoutes");
 const courseRoutes = require("./Routes/CourseRoutes");
 const materialRoutes = require("./Routes/MaterialRoutes");
 const chapterRoutes = require("./Routes/chapterRoutes");
+const StudentTrackerRoutes = require("./Routes/StudentTrackerRoutes");
+
 
 app.use("/auth", userRoutes);
 app.use("/assignment", assignmentRoutes);
@@ -49,6 +51,7 @@ app.use("/performance", performanceRoutes);
 app.use("/course", courseRoutes);
 app.use("/material", materialRoutes);
 app.use("/chapter", chapterRoutes);
+app.use("/studenttracker", StudentTrackerRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

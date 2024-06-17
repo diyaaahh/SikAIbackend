@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const StudentTrackerSchema = new Schema({
   courseId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Course",
+    ref: 'Course',
     required: true,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   courseCardClicks: {
@@ -24,6 +24,10 @@ const StudentTrackerSchema = new Schema({
     type: Number,
     default: 0,
   },
+  courseTimeSpent: {
+    type: Number,
+    default: 0,
+  },
   totalTimeSpent: {
     type: Number,
     default: 0,
@@ -33,7 +37,7 @@ const StudentTrackerSchema = new Schema({
       {
         assignmentId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Assignment",
+          ref: 'Assignment',
         },
         isClicked: {
           type: Boolean,
@@ -51,7 +55,7 @@ const StudentTrackerSchema = new Schema({
       {
         materialId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Material",
+          ref: 'Material',
         },
         isDownloaded: {
           type: Boolean,
@@ -60,19 +64,21 @@ const StudentTrackerSchema = new Schema({
       },
     ],
   },
-  examTracking:{
+  examTracking: {
     type: [
-     { 
-      examId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Exam"
+      {
+        examId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Exam',
+        },
+        isTabChanged: {
+          type: Boolean,
+          default: false,
+        },
       },
-      isTabChanged:{
-        type: Boolean,
-        default: false
-      },
-    }
-    ]
-  }
+    ],
+  },
 });
-const materialModel = mongoose.model("Material", StudentTrackerSchema);
+
+const StudentTracker = mongoose.model('StudentTracker', StudentTrackerSchema);
+module.exports = StudentTracker;
