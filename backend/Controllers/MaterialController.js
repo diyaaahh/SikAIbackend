@@ -25,6 +25,20 @@ const getAllMaterials = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getMaterialSummary = async (req, res) => {
+  try {
+    const materialId = req.params.id;
+    const material = await materialModel.findById(materialId);
+
+    if (!material) {
+      return res.status(404).json({ message: "Material not found" });
+    }
+
+    res.status(200).json({ summary: material.summary });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 // Controller to get a material by its ID
 const getMaterialById = async (req, res) => {
@@ -73,6 +87,7 @@ const deleteMaterialById = async (req, res) => {
 module.exports = {
   createMaterial,
   getAllMaterials,
+  getMaterialSummary,
   getMaterialById,
   updateMaterialById,
   deleteMaterialById,

@@ -1,5 +1,15 @@
-const StudentTracker = require('../Models/StudentTracker');
-const mongoose = require('mongoose');
+const StudentTracker = require("../Models/StudentTracker");
+const mongoose = require("mongoose");
+
+async function getAllStudentTrackers(req, res) {
+  try {
+    const studentTrackers = await StudentTracker.find({}).populate("userId");
+    return res.status(200).json(studentTrackers);
+  } catch (error) {
+    console.error("Error fetching student trackers:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
 
 async function addStudentTracker(req, res) {
     try {
