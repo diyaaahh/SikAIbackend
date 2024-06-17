@@ -7,8 +7,8 @@ app.use(express.json());
 //cors
 const cors = require("cors");
 const corsOptions = {
-  origin: "http://localhost:5173", // Frontend URL
-  methods: ["GET", "POST"], // Allowed HTTP methods
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT"], // Allowed HTTP methods
   allowedHeaders: ["Content-Type"], // Allowed headers
 };
 
