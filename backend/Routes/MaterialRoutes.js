@@ -14,6 +14,8 @@ router.post("/", createMaterial);
 // GET /materials - Retrieve all materials
 router.get("/", getAllMaterials);
 
+router.get('/:id/summary')
+
 // GET /materials/:id - Retrieve a material by ID
 router.get("/:id", getMaterialById);
 
