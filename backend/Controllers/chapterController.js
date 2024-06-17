@@ -39,7 +39,7 @@ const deleteChapterbyId = async (req, res) => {
 //add material
 const addMaterial = async (req, res) => {
   try {
-    const material = req.body;
+    const material = req.body.material;
     const chapter = await Chapter.findById(req.params.id);
     if (!chapter) {
       return res.status(404).json({ message: "Chapter not found" });
