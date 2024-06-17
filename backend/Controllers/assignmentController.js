@@ -6,7 +6,7 @@ const Chapter = require("../Models/Chapter")
 async function createAssignment(req, res) {
   try {
     const {
-      CreatedBy,
+     
       assignmentTitle,
       description,
       deadline,
@@ -18,7 +18,7 @@ async function createAssignment(req, res) {
     // Check if all required fields are provided
     if (
       !(
-        CreatedBy &&
+        deadline &&
         assignmentTitle &&
         deadline &&
         totalPoints &&
@@ -31,12 +31,13 @@ async function createAssignment(req, res) {
 
     // Create new assignment
     const assignment = await assignmentModel.create({
-      CreatedBy,
+     
       assignmentUrl,
       assignmentTitle,
       description: description || "", // If description is not provided, default to empty string
       deadline,
       totalPoints,
+     
     });
 
     // Update the chapter to include the new assignment

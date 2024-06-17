@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const AssignmentSchema = new Schema({
-  CreatedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+
   assignmentUrl: {
     type: String,
     required: true,
