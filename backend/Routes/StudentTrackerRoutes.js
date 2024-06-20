@@ -5,9 +5,10 @@ const {
   updateStudentTracker,
   getAllStudentTrackers,
 } = require("../Controllers/StudentTrackerController");
+Router.get("/all/:courseId", getAllStudentTrackers);
 Router.post("/add", addStudentTracker);
 Router.get("/:id/:courseId", getStudentTracker);
 Router.put("/:id/:courseId", updateStudentTracker);
-Router.get("/getAll", getAllStudentTrackers);
+
 
 module.exports = Router;

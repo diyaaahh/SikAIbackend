@@ -2,14 +2,31 @@ const StudentTracker = require("../Models/StudentTracker");
 const mongoose = require("mongoose");
 
 async function getAllStudentTrackers(req, res) {
-  try {
-    const studentTrackers = await StudentTracker.find({}).populate("userId");
-    return res.status(200).json(studentTrackers);
-  } catch (error) {
-    console.error("Error fetching student trackers:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    try {
+      const courseId = req.params.courseId;
+      const studentTrackers = await StudentTracker.find({ courseId: courseId })
+        .populate("userId")
+        .populate({
+          path: 'assignmentTracker.assignmentId',
+          model: 'Assignment'
+        })
+        .populate({
+            path: 'readingMaterialTracker.materialId',
+          model: 'Material'
+        })
+        .populate({
+            path: 'examTracking.examId',
+          model: 'Exam'
+        })
+        ;
+  
+      return res.status(200).json(studentTrackers);
+    } catch (error) {
+      console.error("Error fetching student trackers:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
   }
-}
+  
 
 async function addStudentTracker(req, res) {
     try {
@@ -53,7 +70,7 @@ async function updateStudentTracker(req, res) {
             return res.status(400).json({ message: 'Invalid user ID format' });
         }
 
-        let studentTracker = await StudentTracker.findOne({ userId: id , courseId: courseId});
+        let studentTracker = await StudentTracker.findOne({ userId: id, courseId: courseId });
         if (!studentTracker) {
             return res.status(404).json({ message: 'Student tracker not found' });
         }
@@ -66,14 +83,29 @@ async function updateStudentTracker(req, res) {
                     if (Array.isArray(updateData[key])) {
                         // Update array of subdocuments
                         updateData[key].forEach((item) => {
-                            const existingItem = studentTracker[key].find(existing => existing._id.equals(item._id));
+                            let existingItem;
+                            if (item.assignmentId) {
+                                existingItem = studentTracker[key].find(existing => existing.assignmentId && existing.assignmentId.toString() === item.assignmentId.toString());
+                            } else if (item.materialId) {
+                                existingItem = studentTracker[key].find(existing => existing.materialId && existing.materialId.toString() === item.materialId.toString());
+                            } else if (item.examId) {
+                                existingItem = studentTracker[key].find(existing => existing.examId && existing.examId.toString() === item.examId.toString());
+                            }
+
                             if (existingItem) {
-                                // Add to existing values
-                                Object.keys(item).forEach(subKey => {
-                                    if (subKey !== '_id') {
-                                        existingItem[subKey] += item[subKey];
-                                    }
-                                });
+                                // Update the existing item
+                                if (item.timeSpent !== undefined) {
+                                    existingItem.timeSpent += item.timeSpent;
+                                }
+                                if (item.isClicked !== undefined) {
+                                    existingItem.isClicked = existingItem.isClicked || item.isClicked;
+                                }
+                                if (item.isDownloaded !== undefined) {
+                                    existingItem.isDownloaded = existingItem.isDownloaded || item.isDownloaded;
+                                }
+                                if (item.isTabChanged !== undefined) {
+                                    existingItem.isTabChanged = existingItem.isTabChanged || item.isTabChanged;
+                                }
                             } else {
                                 // Add new item if not already present
                                 studentTracker[key].push(item);
@@ -82,7 +114,9 @@ async function updateStudentTracker(req, res) {
                     }
                 } else {
                     // Handle scalar fields (like courseCardClicks, coursePdfDownloads, etc.)
-                    studentTracker[key] += updateData[key];
+                    if (updateData[key] !== undefined) {
+                        studentTracker[key] += updateData[key];
+                    }
                 }
             }
         }
@@ -102,4 +136,4 @@ async function updateStudentTracker(req, res) {
     }
 }
 
-module.exports = { addStudentTracker, getStudentTracker, updateStudentTracker };
+module.exports = { addStudentTracker, getStudentTracker, updateStudentTracker, getAllStudentTrackers };
