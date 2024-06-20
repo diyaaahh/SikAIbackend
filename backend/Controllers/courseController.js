@@ -79,7 +79,7 @@ const addChapter = async (req, res) => {
 //add student
 const addStudent = async (req, res) => {
   try {
-    const student = req.body;
+    const {student} = req.body;
     const course = await Course.findById(req.params.id);
     if (!course) {
       return res.status(404).json({ message: "Course not found" });

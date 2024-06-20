@@ -38,4 +38,16 @@ const getScore = async (req, res) => {
   }
 };
 
-module.exports = {storeScores, getScore};
+const getScoresByStudentId = async (req, res) => {
+console.log('aayo')
+  try {
+    const scores = await Score.find({
+      userId: req.params.studentId,  // This should now correctly use the studentId from the URL
+    }).populate('examId');
+    res.status(200).json(scores);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+module.exports = {storeScores, getScore, getScoresByStudentId};

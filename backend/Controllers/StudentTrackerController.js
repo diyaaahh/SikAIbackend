@@ -48,7 +48,20 @@ async function getStudentTracker(req, res) {
             return res.status(400).json({ message: 'Invalid user ID format' });
         }
         
-        const studentTracker = await StudentTracker.findOne({ userId: id, courseId: courseId});
+        const studentTracker = await StudentTracker.findOne({ userId: id, courseId: courseId})
+        .populate("userId")
+        .populate({
+          path: 'assignmentTracker.assignmentId',
+          model: 'Assignment'
+        })
+        .populate({
+            path: 'readingMaterialTracker.materialId',
+          model: 'Material'
+        })
+        .populate({
+            path: 'examTracking.examId',
+          model: 'Exam'
+        })
 
         if (!studentTracker) {
             return res.status(404).json({ message: 'Student tracker not found' });

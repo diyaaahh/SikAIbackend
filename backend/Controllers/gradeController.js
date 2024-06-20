@@ -57,11 +57,24 @@ const deleteGradeById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getGradeByStudentId = async (req, res) => {
+  try {
+    const grade = await Grade.find({ studentId: req.params.studentId }).populate("assignmentId");
+    if (!grade) {
+      return res.status(404).json({ message: "Grade not found" });
+    }
+    res.status(200).json(grade);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 module.exports = {
+
   createGrade,
   getAllGrades,
   getGradeById,
   updateGradeById,
   deleteGradeById,
+  getGradeByStudentId
 };
